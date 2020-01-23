@@ -1,0 +1,25 @@
+{
+  "name": "word-cloud",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/server/index.ts",
+    "prod": "tsc && node ./build/server/index.js"
+  },
+  "author": "Carl-Johan Lindblad",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.2",
+    "express": "^4.17.1",
+    "ts-node-dev": "^1.0.0-pre.44"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.1",
+    "@types/node": "^13.5.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^25.0.0",
+    "typescript": "^3.7.5"
+  }
+}
