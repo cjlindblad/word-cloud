@@ -1,7 +1,9 @@
-var Twitter = require('twitter');
+const Twitter = require('twitter');
+const stopword = require('stopword');
 
 interface Tweet {
   full_text: string;
+  lang: string;
 }
 
 interface Credentials {
@@ -29,7 +31,13 @@ class TwitterClient {
       throw new Error(err);
     }
 
-    const result = tweets.map(tweet => tweet.full_text);
+    console.log(tweets);
+
+    const result = tweets.map(tweet =>
+      stopword
+        .removeStopwords(tweet.full_text.split(' '), stopword[tweet.lang])
+        .join(' ')
+    );
 
     return result;
   }

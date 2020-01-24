@@ -21,6 +21,7 @@ const App: React.FC = () => {
         },
         body: JSON.stringify({ searchTerm }),
       }).then(res => res.json());
+      console.log(result);
     } catch (err) {
       alert(err);
     }
