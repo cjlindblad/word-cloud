@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const App: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch('/test').then(res => res.json());
@@ -11,21 +12,31 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleSubmit = async () => {
+    try {
+      const result = await fetch('/word-cloud', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ searchTerm }),
+      }).then(res => res.json());
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={event => {
+            setSearchTerm(event.target.value);
+          }}
+        ></input>
+        <button onClick={handleSubmit}>GO</button>
       </header>
     </div>
   );
