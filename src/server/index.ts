@@ -7,6 +7,7 @@ import { weightWords, removeStopWords } from '../core/wordService';
 
 dotenv.config();
 
+// adopted from https://medium.com/the-node-js-collection/simple-server-side-cache-for-express-js-with-node-js-45ff296ca0f0
 const cache = (duration: number) => {
   return (req: any, res: any, next: any) => {
     let key = '__express__' + req.originalUrl || req.url;
@@ -30,7 +31,7 @@ const app: express.Application = express();
 
 app.use(express.json());
 
-app.get('/word-cloud', cache(30), async (req, res) => {
+app.get('/word-cloud', cache(60 * 60), async (req, res) => {
   const searchTerm = req.query.searchTerm;
 
   const twitterCredentials = {
