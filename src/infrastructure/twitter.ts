@@ -67,7 +67,10 @@ class TwitterClient {
 
         maxId = result.statuses[result.statuses.length - 1].id_str;
 
-        if (tweets.length >= maxResults) {
+        if (
+          tweets.length >= maxResults ||
+          result.statuses.length < params.count
+        ) {
           done = true;
         }
       }
