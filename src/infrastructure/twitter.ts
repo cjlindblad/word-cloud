@@ -1,9 +1,11 @@
 const Twitter = require('twitter');
 const stopword = require('stopword');
 
+// a tweet has _lots_ of properties, but we only care about these.
 interface Tweet {
   full_text: string;
   lang: string;
+  id_str: string;
 }
 
 interface Credentials {
@@ -20,26 +22,61 @@ class TwitterClient {
     this.client = new Twitter(credentials);
   }
 
-  public async search(term: string) {
-    const params = { tweet_mode: 'extended', q: term, count: 100 };
-    let tweets: Tweet[];
+  public async search(term: string, maxResults: number = 100) {
+    const MAX_RESULTS_PER_PAGE = 100;
+
+    let tweets: Tweet[] = [];
+    let done = false;
+    let maxId = '';
+
+    const getRequestCount = () => {
+      const currentResultCount = tweets.length;
+
+      let remainingResults = maxResults - currentResultCount;
+
+      if (tweets.length > 0) {
+        // we need this buffer to account for the 'max_id' duplicate tweet
+        remainingResults += 1;
+      }
+
+      if (remainingResults > MAX_RESULTS_PER_PAGE) {
+        return MAX_RESULTS_PER_PAGE;
+      }
+
+      return remainingResults;
+    };
+
     try {
-      const result = await this.client.get('search/tweets.json', params);
-      tweets = result.statuses;
+      while (!done) {
+        let params: any = {
+          tweet_mode: 'extended',
+          q: term,
+          count: getRequestCount(),
+        };
+
+        if (maxId !== '') {
+          params = { ...params, max_id: maxId };
+        }
+
+        let result = await this.client.get('search/tweets.json', params);
+
+        tweets = [
+          ...tweets,
+          ...result.statuses.filter((tweet: Tweet) => tweet.id_str !== maxId),
+        ];
+
+        maxId = result.statuses[result.statuses.length - 1].id_str;
+
+        if (tweets.length >= maxResults) {
+          done = true;
+        }
+      }
     } catch (err) {
       console.log(err);
       throw new Error(err);
     }
 
-    console.log(tweets);
-
-    const result = tweets.map(tweet =>
-      stopword
-        .removeStopwords(tweet.full_text.split(' '), stopword[tweet.lang])
-        .join(' ')
-    );
-
-    return result;
+    return tweets;
   }
 }
 

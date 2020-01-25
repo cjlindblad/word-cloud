@@ -1,7 +1,7 @@
 import express = require('express');
 
 import TwitterClient from '../infrastructure/twitter';
-import { weightWords } from '../core/wordService';
+import { weightWords, removeStopWords } from '../core/wordService';
 
 import dotenv from 'dotenv';
 
@@ -31,9 +31,15 @@ app.post('/word-cloud', async function(req, res) {
 
   const twitterClient = new TwitterClient(twitterCredentials);
 
-  const tweets = await twitterClient.search(searchTerm);
+  const tweets = await twitterClient.search(searchTerm, 250);
 
-  const weightedWords = weightWords(tweets.join(' '));
+  const cleanedTweetText = tweets
+    .map(tweet =>
+      removeStopWords(tweet.full_text.split(' '), tweet.lang).join(' ')
+    )
+    .join(' ');
+
+  const weightedWords = weightWords(cleanedTweetText);
 
   const result = weightedWords.slice(0, 100);
 

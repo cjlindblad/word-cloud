@@ -1,3 +1,5 @@
+import stopword from 'stopword';
+
 interface WeightedWord {
   word: string;
   count: number;
@@ -23,6 +25,12 @@ export const weightWords = (sentence: string) => {
       count: entry[1],
     }))
     .sort((a, b) => b.count - a.count);
+
+  return result;
+};
+
+export const removeStopWords = (input: string[], lang: string) => {
+  const result = stopword.removeStopwords(input, (stopword as any)[lang]);
 
   return result;
 };
