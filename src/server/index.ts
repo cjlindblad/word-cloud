@@ -1,26 +1,37 @@
 import express = require('express');
+import memoryCache from 'memory-cache';
+import dotenv from 'dotenv';
 
 import TwitterClient from '../infrastructure/twitter';
 import { weightWords, removeStopWords } from '../core/wordService';
 
-import dotenv from 'dotenv';
-
 dotenv.config();
+
+const cache = (duration: number) => {
+  return (req: any, res: any, next: any) => {
+    let key = '__express__' + req.originalUrl || req.url;
+    let cachedBody = memoryCache.get(key);
+
+    if (cachedBody) {
+      res.send(cachedBody);
+      return;
+    }
+
+    res.sendResponse = res.send;
+    res.send = (body: any) => {
+      memoryCache.put(key, body, duration * 1000);
+      res.sendResponse(body);
+    };
+    next();
+  };
+};
 
 const app: express.Application = express();
 
 app.use(express.json());
 
-app.get('/test', function(req, res) {
-  res.json([
-    {
-      result: 'test data',
-    },
-  ]);
-});
-
-app.post('/word-cloud', async function(req, res) {
-  const searchTerm = req.body.searchTerm;
+app.get('/word-cloud', cache(30), async (req, res) => {
+  const searchTerm = req.query.searchTerm;
 
   const twitterCredentials = {
     consumer_key: process.env.TW_CONSUMER_KEY || '',
