@@ -55,7 +55,9 @@ app.get('/word-cloud', cache(60 * 60), async (req, res) => {
       removeStopWords(
         removeTwitterTerms(
           tweet.full_text
+            .trim()
             .split(' ')
+            .filter(word => word.length > 0)
             .filter(word => word.toLowerCase() !== searchTerm.toLowerCase())
         ),
         tweet.lang
