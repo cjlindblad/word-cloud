@@ -47,7 +47,18 @@ export const removeStopWords = (input: string[], lang: string) => {
 };
 
 export const removeTwitterTerms = (input: string[]) => {
-  const twitterTerms = ['rt'];
+  const RETWEET = /rt/;
+  const HANDLE = /@.+/;
 
-  return input.filter(word => !twitterTerms.includes(word.toLowerCase()));
+  const twitterTerms = [RETWEET, HANDLE];
+
+  return input.filter(word => {
+    for (const term of twitterTerms) {
+      if (word.toLowerCase().match(term)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 };

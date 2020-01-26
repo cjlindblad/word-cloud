@@ -1,5 +1,4 @@
 const Twitter = require('twitter');
-const stopword = require('stopword');
 
 // a tweet has _lots_ of properties, but we only care about these.
 interface Tweet {
