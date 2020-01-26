@@ -1,6 +1,7 @@
 import express = require('express');
 import memoryCache from 'memory-cache';
 import dotenv from 'dotenv';
+import _ from 'lodash';
 
 import TwitterClient from '../infrastructure/twitter';
 import {
@@ -65,7 +66,7 @@ app.get('/word-cloud', cache(60 * 60), async (req, res) => {
     )
     .join(' ');
 
-  const weightedWords = weightWords(cleanedTweetText, 100);
+  const weightedWords = _.shuffle(weightWords(cleanedTweetText, 100));
 
   res.json({
     wordCloud: weightedWords,

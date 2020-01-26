@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Word from './Word';
@@ -21,15 +21,24 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  border: 1px solid red;
+  border: 1px solid #ffffffaa;
 `;
 
 const WordCloud = React.memo((props: Props) => {
+  const cloudRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState<DOMRect | null>(null);
+  useLayoutEffect(() => {
+    setDimensions(cloudRef!.current!.getBoundingClientRect());
+  }, []);
+
   const { words } = props;
 
   return (
-    <Wrapper>
-      {words && words.map(word => <Word key={word.word} word={word} />)}
+    <Wrapper ref={cloudRef}>
+      {words &&
+        words.map(word => (
+          <Word wrapperDimensions={dimensions} key={word.word} word={word} />
+        ))}
     </Wrapper>
   );
 });

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import './App.css';
+import styled from 'styled-components';
 
 import WordCloud, { WeightedWord } from './WordCloud';
+
+const Input = styled.input`
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 19px;
+  border-color: transparent;
+`;
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +32,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <input
+        <Input
           type="text"
           value={searchTerm}
           onKeyDown={event => {
@@ -35,7 +43,7 @@ const App: React.FC = () => {
           onChange={event => {
             setSearchTerm(event.target.value);
           }}
-        ></input>
+        ></Input>
         <button onClick={handleSubmit}>GO</button>
         <WordCloud words={weightedWords} />
       </header>
