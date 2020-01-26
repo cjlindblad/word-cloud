@@ -6,6 +6,7 @@ import Word from './Word';
 export interface WeightedWord {
   word: string;
   count: number;
+  weight: number;
 }
 
 interface Props {

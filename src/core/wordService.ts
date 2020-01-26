@@ -3,34 +3,51 @@ import stopword from 'stopword';
 interface WeightedWord {
   word: string;
   count: number;
+  weight: number;
 }
 
-export const weightWords = (sentence: string) => {
-  const countByWord: { [word: string]: number } = {};
-
-  sentence
+export const weightWords = (input: string, maxWordCount: number = 100) => {
+  const countByWord = input
     .split(' ')
     .map(word => word.toLowerCase())
-    .forEach(word => {
-      if (!countByWord[word]) {
-        countByWord[word] = 0;
+    .reduce((result, word) => {
+      if (!result[word]) {
+        result[word] = 0;
       }
 
-      countByWord[word] += 1;
-    });
+      result[word] += 1;
 
-  const result: WeightedWord[] = Object.entries(countByWord)
+      return result;
+    }, {} as { [word: string]: number });
+
+  const words: WeightedWord[] = Object.entries(countByWord)
     .map(entry => ({
       word: entry[0],
       count: entry[1],
+      weight: 0,
     }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count)
+    .slice(0, maxWordCount);
 
-  return result;
+  const wordCounts = words.map(word => word.count);
+  const largestWordCount = Math.max(...wordCounts);
+
+  const weightedWords = words.map(word => ({
+    ...word,
+    weight: word.count / largestWordCount,
+  }));
+
+  return weightedWords;
 };
 
 export const removeStopWords = (input: string[], lang: string) => {
   const result = stopword.removeStopwords(input, (stopword as any)[lang]);
 
   return result;
+};
+
+export const removeTwitterTerms = (input: string[]) => {
+  const twitterTerms = ['rt'];
+
+  return input.filter(word => !twitterTerms.includes(word.toLowerCase()));
 };

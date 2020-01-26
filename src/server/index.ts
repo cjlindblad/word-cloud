@@ -3,7 +3,11 @@ import memoryCache from 'memory-cache';
 import dotenv from 'dotenv';
 
 import TwitterClient from '../infrastructure/twitter';
-import { weightWords, removeStopWords } from '../core/wordService';
+import {
+  weightWords,
+  removeStopWords,
+  removeTwitterTerms,
+} from '../core/wordService';
 
 dotenv.config();
 
@@ -43,20 +47,26 @@ app.get('/word-cloud', cache(60 * 60), async (req, res) => {
 
   const twitterClient = new TwitterClient(twitterCredentials);
 
-  const tweets = await twitterClient.search(searchTerm, 250);
+  const tweets = await twitterClient.search(searchTerm, 100);
 
+  // TODO clean this one up..
   const cleanedTweetText = tweets
     .map(tweet =>
-      removeStopWords(tweet.full_text.split(' '), tweet.lang).join(' ')
+      removeStopWords(
+        removeTwitterTerms(
+          tweet.full_text
+            .split(' ')
+            .filter(word => word.toLowerCase() !== searchTerm.toLowerCase())
+        ),
+        tweet.lang
+      ).join(' ')
     )
     .join(' ');
 
-  const weightedWords = weightWords(cleanedTweetText);
-
-  const result = weightedWords.slice(0, 100);
+  const weightedWords = weightWords(cleanedTweetText, 100);
 
   res.json({
-    wordCloud: result,
+    wordCloud: weightedWords,
   });
 });
 

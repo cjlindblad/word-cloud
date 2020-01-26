@@ -11,7 +11,8 @@ const Word = (props: Props) => {
 
   const Wrapper = styled.div`
     position: absolute;
-    font-size: ${word.count}px;
+    font-size: ${5 * word.weight}rem;
+    opacity: ${word.weight};
     margin-left: ${Math.random() * 500 - 250}px;
     margin-top: ${Math.random() * 300 - 150}px;
   `;
