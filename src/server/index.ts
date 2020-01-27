@@ -31,7 +31,7 @@ app.get('/word-cloud', cache(60 * 60), async (req, res, next) => {
 
     const twitterClient = new TwitterClient(twitterCredentials);
 
-    const tweets = await twitterClient.search(searchTerm, 1000);
+    const tweets = await twitterClient.search(searchTerm, 100);
 
     let cleanedTweetText = tweets
       .map(tweet => removeStopWords(tweet.full_text.split(' '), tweet.lang))

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import styled from 'styled-components';
 
+import searchIcon from './icons/search.svg';
 import WordCloud, { WeightedWord } from './WordCloud';
 
 const Wrapper = styled.div`
@@ -14,12 +15,36 @@ const Wrapper = styled.div`
   color: white;
 `;
 
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-bottom: 20px;
+`;
+
 const Input = styled.input`
   padding: 8px 16px;
   font-size: 16px;
   border-radius: 19px;
   border-color: transparent;
-  margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const SearchIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;
 
 const App: React.FC = () => {
@@ -53,19 +78,23 @@ const App: React.FC = () => {
 
   return (
     <Wrapper>
-      <Input
-        type="text"
-        value={searchTerm}
-        onKeyDown={event => {
-          if (event.key === 'Enter') {
-            handleSubmit();
-          }
-        }}
-        onChange={event => {
-          setSearchTerm(event.target.value);
-        }}
-      ></Input>
-      <button onClick={handleSubmit}>GO</button>
+      <InputWrapper>
+        <Input
+          type="text"
+          value={searchTerm}
+          onKeyDown={event => {
+            if (event.key === 'Enter') {
+              handleSubmit();
+            }
+          }}
+          onChange={event => {
+            setSearchTerm(event.target.value);
+          }}
+        />
+        <Button onClick={handleSubmit}>
+          <SearchIcon src={searchIcon} />
+        </Button>
+      </InputWrapper>
       <WordCloud words={weightedWords} isFetching={isFetching} />
     </Wrapper>
   );
