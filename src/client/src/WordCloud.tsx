@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 
 import Word from './Word';
@@ -11,17 +11,16 @@ export interface WeightedWord {
 
 interface Props {
   words?: WeightedWord[];
+  isFetching: boolean;
 }
 
-const Wrapper = styled.div`
-  position: relative;
-  width: 100vw;
+const Wrapper = styled.div<{ isFetching: boolean }>`
+  width: 90vw;
   height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  border: 1px solid #ffffffaa;
+  flex-wrap: wrap;
 `;
 
 const WordCloud = React.memo((props: Props) => {
@@ -31,10 +30,11 @@ const WordCloud = React.memo((props: Props) => {
     setDimensions(cloudRef!.current!.getBoundingClientRect());
   }, []);
 
-  const { words } = props;
+  const { words, isFetching } = props;
 
   return (
-    <Wrapper ref={cloudRef}>
+    <Wrapper isFetching={isFetching} ref={cloudRef}>
+      {isFetching && 'Loading..'}
       {words &&
         words.map(word => (
           <Word wrapperDimensions={dimensions} key={word.word} word={word} />

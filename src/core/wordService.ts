@@ -46,11 +46,20 @@ export const removeStopWords = (input: string[], lang: string) => {
   return result;
 };
 
+export const removeTrash = (input: string[]) => {
+  const trash = ['', '-', '.', ',', '?', '!', '#', '_', '/', '#', '@', '–'];
+
+  return input.filter(word => !trash.includes(word));
+};
+
 export const removeTwitterTerms = (input: string[]) => {
   const RETWEET = /rt/;
   const HANDLE = /@.+/;
+  const HASHTAG = /#.+/;
+  const AMP = /&amp;/;
+  const LINK = /http.+/;
 
-  const twitterTerms = [RETWEET, HANDLE];
+  const twitterTerms = [RETWEET, HANDLE, HASHTAG, AMP, LINK];
 
   return input.filter(word => {
     for (const term of twitterTerms) {
