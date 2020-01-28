@@ -1,4 +1,3 @@
-import TwitterClient, { Tweet } from '../infrastructure/twitter';
 import _ from 'lodash';
 
 import {
@@ -7,6 +6,7 @@ import {
   removeTwitterTerms,
   removeTrash,
 } from '../core/words';
+import { Tweet, TwitterClient } from './interfaces';
 
 export const getTwitterWordCloud = async (
   client: TwitterClient,

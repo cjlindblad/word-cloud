@@ -1,11 +1,6 @@
-const Twitter = require('twitter');
+import { Tweet } from '../core/interfaces';
 
-// a tweet has _lots_ of properties, but we only care about these.
-export interface Tweet {
-  full_text: string;
-  lang: string;
-  id_str: string;
-}
+const Twitter = require('twitter');
 
 interface Credentials {
   consumer_key: string;
@@ -76,7 +71,6 @@ class TwitterClient {
         }
       }
     } catch (err) {
-      console.log(err);
       throw new Error(err);
     }
 
