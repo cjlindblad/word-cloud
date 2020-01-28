@@ -40,7 +40,7 @@ const App: React.FC = () => {
       setErrorMessage(undefined);
       setIsFetching(true);
 
-      const result = await Api.getWordCloud(searchTerm);
+      const result = await Api.getWordCloud(searchTerm, 100);
 
       setWeightedWords(result.wordCloud);
     } catch (err) {
