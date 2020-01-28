@@ -46,6 +46,7 @@ class TwitterClient {
           tweet_mode: 'extended',
           q: term,
           count: getRequestCount(),
+          lang: 'sv',
         };
 
         if (maxId !== '') {

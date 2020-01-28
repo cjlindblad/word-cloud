@@ -28,7 +28,7 @@ export const getTwitterWordCloud = async (
 
 const tweetsToCleanWords = (tweets: Tweet[], searchTerm: string) => {
   let cleanedWords = tweets
-    .map(tweet => removeStopWords(tweet.full_text.split(' '), tweet.lang))
+    .map(tweet => removeStopWords(tweet.full_text.split(/[\s,]+/), tweet.lang))
     .reduce((result, tweet) => result.concat(tweet), [] as string[]);
 
   cleanedWords = removeTrash(cleanedWords);
