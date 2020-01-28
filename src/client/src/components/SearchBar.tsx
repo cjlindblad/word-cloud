@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import searchIcon from '../icons/search.svg';
+import searchIcon from '../assets/search.svg';
 
 const Wrapper = styled.div`
   display: flex;

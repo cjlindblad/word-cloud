@@ -6,7 +6,8 @@
     "test": "jest",
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/backend/index.ts",
-    "prod": "tsc && node ./build/backend/index.js"
+    "prod": "tsc && node ./build/backend/index.js",
+    "start": "npm run dev & cd src/client && npm run start"
   },
   "author": "Carl-Johan Lindblad",
   "license": "ISC",
