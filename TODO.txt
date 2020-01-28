@@ -1,0 +1,6 @@
+- Find a way to determine appropriate response language
+- Implement Wordle algorithm
+- Mock external services and write tests for them
+- Experiment with more efficient ways to use Twitter's API
+- Prod configuration
+- Server side rendering
