@@ -4,7 +4,7 @@ const getWordCloud = async (searchTerm: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error('Något gick fel! 😕');
+    throw new Error('Oops! Something went wrong! 😕');
   }
 
   return response.json();

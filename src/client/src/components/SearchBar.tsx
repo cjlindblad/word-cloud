@@ -14,6 +14,7 @@ const Input = styled.input`
   font-size: 16px;
   border-radius: 19px;
   border-color: transparent;
+  width: 210px;
 `;
 
 const Button = styled.button`
@@ -52,6 +53,7 @@ const SearchBar = (props: Props) => {
     <Wrapper className={props.className}>
       <Input
         type="text"
+        placeholder="Search for twitter hashtag"
         value={searchTerm}
         onKeyDown={event => {
           if (event.key === 'Enter' && searchTerm.length > 0) {
