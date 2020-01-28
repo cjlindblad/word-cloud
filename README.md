@@ -1,7 +1,7 @@
 # word-cloud
 
 ## Instructions
-First run `npm install && cd src/client && npm install`. Then run `npm run start` from the root directory.
+First run `npm run setup`. Then run `npm run start`.
 
 The start scripts tries to fork a process, which won't work in a windows environment. In that case, you'll want to run `npm run dev` from the root directory, and then run `npm run start` from `./src/client` in a separate terminal.
 
