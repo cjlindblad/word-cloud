@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import styled from 'styled-components';
 
-import searchIcon from './icons/search.svg';
+import StylableSearchBar from './SearchBar';
 import WordCloud, { WeightedWord } from './WordCloud';
 
 const Wrapper = styled.div`
@@ -10,51 +10,22 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
 `;
 
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  margin-bottom: 20px;
-`;
-
-const Input = styled.input`
-  padding: 8px 16px;
-  font-size: 16px;
-  border-radius: 19px;
-  border-color: transparent;
-`;
-
-const Button = styled.button`
-  position: absolute;
-  right: 0;
-  height: 100%;
-  padding-right: 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const SearchIcon = styled.img`
-  width: 20px;
-  height: 20px;
+const SearchBar = styled(StylableSearchBar)`
+  margin: 5vh 0;
 `;
 
 const App: React.FC = () => {
   const [isFetching, setIsFetching] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [weightedWords, setWeightedWords] = useState<
     WeightedWord[] | undefined
   >(undefined);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (searchTerm: string) => {
     try {
       setWeightedWords(undefined);
       setIsFetching(true);
@@ -78,23 +49,7 @@ const App: React.FC = () => {
 
   return (
     <Wrapper>
-      <InputWrapper>
-        <Input
-          type="text"
-          value={searchTerm}
-          onKeyDown={event => {
-            if (event.key === 'Enter') {
-              handleSubmit();
-            }
-          }}
-          onChange={event => {
-            setSearchTerm(event.target.value);
-          }}
-        />
-        <Button onClick={handleSubmit}>
-          <SearchIcon src={searchIcon} />
-        </Button>
-      </InputWrapper>
+      <SearchBar onSubmit={handleSubmit} />
       <WordCloud words={weightedWords} isFetching={isFetching} />
     </Wrapper>
   );

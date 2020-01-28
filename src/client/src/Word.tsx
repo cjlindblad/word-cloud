@@ -33,7 +33,6 @@ const Word = (props: Props) => {
     font-size: ${fontSize > MIN_FONT_SIZE ? fontSize : MIN_FONT_SIZE}rem;
     opacity: ${word.weight};
     align-self: ${getAlignment()};
-    margin-right: 1vw;
   `;
 
   return <Wrapper ref={wordRef}>{word.word}</Wrapper>;

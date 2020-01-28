@@ -15,11 +15,12 @@ interface Props {
 }
 
 const Wrapper = styled.div<{ isFetching: boolean }>`
-  width: 90vw;
+  max-width: 90vw;
   height: 80vh;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
 `;
 
