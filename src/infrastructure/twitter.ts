@@ -1,7 +1,7 @@
 const Twitter = require('twitter');
 
 // a tweet has _lots_ of properties, but we only care about these.
-interface Tweet {
+export interface Tweet {
   full_text: string;
   lang: string;
   id_str: string;

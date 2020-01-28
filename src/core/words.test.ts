@@ -1,4 +1,4 @@
-import { weightWords, removeTwitterTerms } from './wordService';
+import { weightWords, removeTwitterTerms } from './words';
 
 describe('word service', () => {
   it('weights a simple sentence correctly', () => {

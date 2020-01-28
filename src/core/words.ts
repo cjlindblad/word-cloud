@@ -47,9 +47,23 @@ export const removeStopWords = (input: string[], lang: string) => {
 };
 
 export const removeTrash = (input: string[]) => {
-  const trash = ['', '-', '.', ',', '?', '!', '#', '_', '/', '#', '@', '–'];
+  const TRASH = [
+    '',
+    '-',
+    '.',
+    ',',
+    '?',
+    '!',
+    '#',
+    '_',
+    '/',
+    '#',
+    '@',
+    '–',
+    '…',
+  ];
 
-  return input.filter(word => !trash.includes(word));
+  return input.filter(word => !TRASH.includes(word));
 };
 
 export const removeTwitterTerms = (input: string[]) => {
