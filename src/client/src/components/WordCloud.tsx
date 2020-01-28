@@ -10,11 +10,10 @@ export interface WeightedWord {
 }
 
 interface Props {
-  words?: WeightedWord[];
-  isFetching: boolean;
+  words: WeightedWord[];
 }
 
-const Wrapper = styled.div<{ isFetching: boolean }>`
+const Wrapper = styled.div`
   max-width: 90vw;
   height: 80vh;
   display: flex;
@@ -25,12 +24,12 @@ const Wrapper = styled.div<{ isFetching: boolean }>`
 `;
 
 const WordCloud = React.memo((props: Props) => {
-  const { words, isFetching } = props;
+  const { words } = props;
 
   return (
-    <Wrapper isFetching={isFetching}>
-      {isFetching && 'Loading..'}
-      {words && words.map(word => <Word key={word.word} word={word} />)}
+    <Wrapper>
+      {words.length > 0 &&
+        words.map(word => <Word key={word.word} word={word} />)}
     </Wrapper>
   );
 });

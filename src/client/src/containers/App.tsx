@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import Api from '../api/index';
 import StylableSearchBar from '../components/SearchBar';
 import WordCloud, { WeightedWord } from '../components/WordCloud';
+import Status from '../components/Status';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -20,27 +22,20 @@ const SearchBar = styled(StylableSearchBar)`
 
 const App: React.FC = () => {
   const [isFetching, setIsFetching] = useState(false);
-  const [weightedWords, setWeightedWords] = useState<
-    WeightedWord[] | undefined
-  >(undefined);
+  const [errorMessage, setErrorMessage] = useState(undefined);
+  const [weightedWords, setWeightedWords] = useState<WeightedWord[]>([]);
 
   const handleSubmit = async (searchTerm: string) => {
     try {
-      setWeightedWords(undefined);
+      setWeightedWords([]);
+      setErrorMessage(undefined);
       setIsFetching(true);
-      const result = await fetch(
-        `/word-cloud?searchTerm=${encodeURIComponent(searchTerm)}`
-      ).then(response => {
-        if (!response.ok) {
-          throw new Error('Något gick fel! 😰');
-        }
 
-        return response.json();
-      });
+      const result = await Api.getWordCloud(searchTerm);
 
       setWeightedWords(result.wordCloud);
     } catch (err) {
-      alert(err.message);
+      setErrorMessage(err.message);
     } finally {
       setIsFetching(false);
     }
@@ -49,7 +44,8 @@ const App: React.FC = () => {
   return (
     <Wrapper>
       <SearchBar onSubmit={handleSubmit} />
-      <WordCloud words={weightedWords} isFetching={isFetching} />
+      <Status isFetching={isFetching} errorMessage={errorMessage} />
+      <WordCloud words={weightedWords} />
     </Wrapper>
   );
 };
