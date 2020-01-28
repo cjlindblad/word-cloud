@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import loadingPuff from '../assets/loading-puff.svg';
+
 const Wrapper = styled.div`
   max-width: 75vw;
   text-align: center;
 `;
+
+const Loader = styled.img``;
 
 interface Props {
   isFetching: boolean;
@@ -15,7 +19,7 @@ const Status = (props: Props) => {
   const { isFetching, errorMessage } = props;
   return (
     <Wrapper>
-      {isFetching && 'Laddar..'}
+      {isFetching && <Loader src={loadingPuff} />}
       {!isFetching && errorMessage}
     </Wrapper>
   );
