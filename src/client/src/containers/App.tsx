@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import StylableSearchBar from './SearchBar';
-import WordCloud, { WeightedWord } from './WordCloud';
+import StylableSearchBar from '../components/SearchBar';
+import WordCloud, { WeightedWord } from '../components/WordCloud';
 
 const Wrapper = styled.div`
   min-height: 100vh;

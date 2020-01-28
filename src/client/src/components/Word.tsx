@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { WeightedWord } from './WordCloud';
 
 interface Props {
   word: WeightedWord;
-  wrapperDimensions: DOMRect | null;
 }
 
 const getAlignment = () => {
@@ -22,20 +21,20 @@ const getAlignment = () => {
 };
 
 const Word = (props: Props) => {
-  const wordRef = useRef<HTMLDivElement>(null);
+  const { word } = props;
 
-  const { wrapperDimensions, word } = props;
-
-  const MIN_FONT_SIZE = 1;
+  const MIN_FONT_SIZE_IN_REM = 1;
   const fontSize = 4 * word.weight;
 
   const Wrapper = styled.div`
-    font-size: ${fontSize > MIN_FONT_SIZE ? fontSize : MIN_FONT_SIZE}rem;
+    font-size: ${fontSize > MIN_FONT_SIZE_IN_REM
+      ? fontSize
+      : MIN_FONT_SIZE_IN_REM}rem;
     opacity: ${word.weight};
     align-self: ${getAlignment()};
   `;
 
-  return <Wrapper ref={wordRef}>{word.word}</Wrapper>;
+  return <Wrapper>{word.word}</Wrapper>;
 };
 
 export default Word;

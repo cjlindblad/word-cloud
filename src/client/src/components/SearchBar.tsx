@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import searchIcon from './icons/search.svg';
+import searchIcon from '../icons/search.svg';
 
 const Wrapper = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ interface Props {
   className?: string;
 }
 
-const SearchBar: React.FC<Props> = (props: Props) => {
+const SearchBar = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSubmit = () => {
